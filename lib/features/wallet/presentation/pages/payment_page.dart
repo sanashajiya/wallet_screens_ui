@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/widgets/app_bottom_nav_bar.dart';
 import '../../../../core/widgets/rounded_card.dart';
 import '../../domain/entities/payment_screen_entity.dart';
 import '../../domain/entities/transaction_entity.dart';
@@ -18,9 +17,7 @@ class PaymentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: AppColors.appBackgroundGradient,
-        ),
+        decoration: BoxDecoration(gradient: AppColors.appBackgroundGradient),
         child: SafeArea(
           child: BlocBuilder<PaymentBloc, PaymentState>(
             builder: (context, state) {
@@ -60,10 +57,7 @@ class _PaymentContent extends StatelessWidget {
           const SizedBox(height: 10),
           _PageIndicator(),
           const SizedBox(height: 24),
-          _StatisticSection(
-            income: data.income,
-            expense: data.expense,
-          ),
+          _StatisticSection(income: data.income, expense: data.expense),
           const SizedBox(height: 20),
           _HistoryList(history: data.history),
         ],
@@ -79,17 +73,28 @@ class _TopBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        IconButton(
-          style: IconButton.styleFrom(
-            backgroundColor: Colors.white.withOpacity(0.18),
+        GestureDetector(
+          onTap: () => Navigator.of(context).pop(),
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white.withAlpha(40),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Colors.white,
+              size: 18,
+            ),
           ),
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: 14),
         Text(
           'Payment',
-          style: AppTextStyles.screenTitle.copyWith(color: Colors.white),
+          style: AppTextStyles.screenTitle.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ],
     );
@@ -103,79 +108,95 @@ class _PaymentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RoundedCard(
-      borderRadius: 24,
-      padding: const EdgeInsets.all(18),
-      backgroundColor: Colors.transparent,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFFFFC8A2),
-              Color(0xFFFEA4C8),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(26),
+        gradient: AppColors.paymentCardGradient,
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFFFDA4C8).withAlpha(80),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(22),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Phone Bill',
+            style: AppTextStyles.caption.copyWith(
+              color: Colors.white.withAlpha(220),
+              fontSize: 13,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            data.cardNumberMasked,
+            style: AppTextStyles.bodyBold.copyWith(
+              color: Colors.white,
+              fontSize: 16,
+              letterSpacing: 1.5,
+            ),
+          ),
+          const SizedBox(height: 18),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white.withAlpha(60),
+                ),
+                child: Text(
+                  'Due in 3 days',
+                  style: AppTextStyles.caption.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              const Spacer(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    'Amount Due',
+                    style: AppTextStyles.caption.copyWith(
+                      color: Colors.white.withAlpha(220),
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '\$${_formatAmount(data.cardBalance)}',
+                    style: AppTextStyles.balance.copyWith(
+                      color: Colors.white,
+                      fontSize: 26,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
-        ),
-        padding: const EdgeInsets.all(18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Phone Bill',
-              style: AppTextStyles.caption.copyWith(
-                color: Colors.white.withOpacity(0.9),
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              data.cardNumberMasked,
-              style: AppTextStyles.bodyBold.copyWith(color: Colors.white),
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: Colors.white.withOpacity(0.25),
-                  ),
-                  child: Text(
-                    'Due in 3 days',
-                    style: AppTextStyles.caption.copyWith(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                const Spacer(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      'Amount Due',
-                      style: AppTextStyles.caption.copyWith(
-                        color: Colors.white.withOpacity(0.9),
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '\$${data.cardBalance.toStringAsFixed(2)}',
-                      style: AppTextStyles.screenTitle.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
+        ],
       ),
     );
+  }
+
+  String _formatAmount(double value) {
+    final parts = value.toStringAsFixed(2).split('.');
+    final intPart = parts[0].replaceAllMapped(
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (Match m) => '${m[1]},',
+    );
+    return '$intPart.${parts[1]}';
   }
 }
 
@@ -205,11 +226,11 @@ class _Dot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: isActive ? 14 : 8,
+      width: isActive ? 20 : 8,
       height: 8,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: isActive ? Colors.white : Colors.white.withOpacity(0.5),
+        color: isActive ? Colors.white : Colors.white.withAlpha(128),
       ),
     );
   }
@@ -219,10 +240,7 @@ class _StatisticSection extends StatelessWidget {
   final double income;
   final double expense;
 
-  const _StatisticSection({
-    required this.income,
-    required this.expense,
-  });
+  const _StatisticSection({required this.income, required this.expense});
 
   @override
   Widget build(BuildContext context) {
@@ -231,17 +249,22 @@ class _StatisticSection extends StatelessWidget {
 
     return RoundedCard(
       backgroundColor: Colors.white,
-      borderRadius: 28,
-      padding: const EdgeInsets.all(18),
+      borderRadius: 24,
+      padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Statistic', style: AppTextStyles.sectionTitle),
-          const SizedBox(height: 16),
+          Text(
+            'Statistic',
+            style: AppTextStyles.sectionTitle.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 18),
           Row(
             children: [
               _DonutChart(incomeRatio: incomeRatio),
-              const SizedBox(width: 20),
+              const SizedBox(width: 24),
               Expanded(
                 child: Column(
                   children: [
@@ -250,7 +273,7 @@ class _StatisticSection extends StatelessWidget {
                       label: 'Income',
                       value: income,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 14),
                     _LegendItem(
                       color: AppColors.expense,
                       label: 'Expense',
@@ -275,31 +298,40 @@ class _DonutChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 80,
-      height: 80,
+      width: 90,
+      height: 90,
       child: Stack(
         alignment: Alignment.center,
         children: [
-          CircularProgressIndicator(
-            value: 1,
-            strokeWidth: 10,
-            valueColor: const AlwaysStoppedAnimation<Color>(
-              AppColors.expense,
+          SizedBox(
+            width: 90,
+            height: 90,
+            child: CircularProgressIndicator(
+              value: 1,
+              strokeWidth: 12,
+              strokeCap: StrokeCap.round,
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                AppColors.expense,
+              ),
+              backgroundColor: Colors.transparent,
             ),
-            backgroundColor: Colors.transparent,
           ),
-          CircularProgressIndicator(
-            value: incomeRatio,
-            strokeWidth: 10,
-            valueColor: const AlwaysStoppedAnimation<Color>(
-              AppColors.income,
+          SizedBox(
+            width: 90,
+            height: 90,
+            child: CircularProgressIndicator(
+              value: incomeRatio,
+              strokeWidth: 12,
+              strokeCap: StrokeCap.round,
+              valueColor: const AlwaysStoppedAnimation<Color>(AppColors.income),
+              backgroundColor: Colors.transparent,
             ),
-            backgroundColor: Colors.transparent,
           ),
           Text(
             '${(incomeRatio * 100).round()}%',
-            style: AppTextStyles.caption.copyWith(
-              fontWeight: FontWeight.w600,
+            style: AppTextStyles.bodyBold.copyWith(
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
             ),
           ),
         ],
@@ -324,23 +356,20 @@ class _LegendItem extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 12,
-          height: 12,
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.circle,
-          ),
+          width: 14,
+          height: 14,
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: 10),
         Expanded(
-          child: Text(
-            label,
-            style: AppTextStyles.body,
-          ),
+          child: Text(label, style: AppTextStyles.body.copyWith(fontSize: 14)),
         ),
         Text(
           '\$${value.toStringAsFixed(0)}',
-          style: AppTextStyles.bodyBold,
+          style: AppTextStyles.bodyBold.copyWith(
+            fontWeight: FontWeight.w700,
+            fontSize: 15,
+          ),
         ),
       ],
     );
@@ -352,73 +381,117 @@ class _HistoryList extends StatelessWidget {
 
   const _HistoryList({required this.history});
 
+  // Map of transaction titles to colors
+  static const _colorMap = {
+    'Starbucks': AppColors.txIconPurple,
+    'Netflix': AppColors.txIconRed,
+    'Salary': AppColors.txIconGreen,
+    'Uber': AppColors.txIconOrange,
+    'default': AppColors.txIconBlue,
+  };
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Row(
           children: [
-            Text('History', style: AppTextStyles.sectionTitle),
-            const Spacer(),
             Text(
-              'See More',
-              style: AppTextStyles.caption.copyWith(
-                fontWeight: FontWeight.w600,
-                color: AppColors.primary,
+              'History',
+              style: AppTextStyles.sectionTitle.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const Spacer(),
+            GestureDetector(
+              onTap: () {},
+              child: Text(
+                'See More',
+                style: AppTextStyles.caption.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primary,
+                ),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 12),
-        Column(
-          children: history
-              .map(
-                (tx) => Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: RoundedCard(
-                    backgroundColor: Colors.white,
-                    borderRadius: 18,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 14, vertical: 10),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 20,
-                          backgroundColor: AppColors.softBackground,
-                          child: const Icon(Icons.person,
-                              color: AppColors.primary),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(tx.title, style: AppTextStyles.bodyBold),
-                              const SizedBox(height: 2),
-                              Text(
-                                _formatDate(tx.date),
-                                style: AppTextStyles.caption,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          (tx.isIncome ? '+ ' : '- ') +
-                              tx.amount.toStringAsFixed(2),
-                          style: tx.isIncome
-                              ? AppTextStyles.amountPositive
-                              : AppTextStyles.amountNegative,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
-              .toList(),
-        ),
+        const SizedBox(height: 14),
+        Column(children: history.map((tx) => _buildHistoryItem(tx)).toList()),
       ],
     );
+  }
+
+  Widget _buildHistoryItem(TransactionEntity tx) {
+    final color = _colorMap[tx.title] ?? _colorMap['default']!;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: RoundedCard(
+        backgroundColor: Colors.white,
+        borderRadius: 20,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: color.withAlpha(40),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Icon(
+                _getIconForTransaction(tx.title),
+                color: color,
+                size: 22,
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    tx.title,
+                    style: AppTextStyles.bodyBold.copyWith(fontSize: 15),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    _formatDate(tx.date),
+                    style: AppTextStyles.caption.copyWith(fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              '${tx.isIncome ? '+' : '-'} ${tx.amount.toStringAsFixed(2)}',
+              style: tx.isIncome
+                  ? AppTextStyles.amountPositive.copyWith(
+                      fontWeight: FontWeight.w600,
+                    )
+                  : AppTextStyles.amountNegative.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  IconData _getIconForTransaction(String title) {
+    switch (title) {
+      case 'Starbucks':
+        return Icons.coffee;
+      case 'Netflix':
+        return Icons.play_arrow_rounded;
+      case 'Salary':
+        return Icons.account_balance;
+      case 'Uber':
+        return Icons.directions_car;
+      default:
+        return Icons.shopping_bag_rounded;
+    }
   }
 
   String _formatDate(DateTime date) {
@@ -427,8 +500,18 @@ class _HistoryList extends StatelessWidget {
 
   String _monthName(int m) {
     const months = [
-      'Jan','Feb','Mar','Apr','May','Jun',
-      'Jul','Aug','Sep','Oct','Nov','Dec',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return months[m - 1];
   }

@@ -5,10 +5,7 @@ class AppBottomNavItem {
   final IconData icon;
   final String label;
 
-  const AppBottomNavItem({
-    required this.icon,
-    required this.label,
-  });
+  const AppBottomNavItem({required this.icon, required this.label});
 }
 
 class AppBottomNavBar extends StatelessWidget {
@@ -26,15 +23,15 @@ class AppBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      decoration: const BoxDecoration(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+      decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
         boxShadow: [
           BoxShadow(
-            color: AppColors.cardShadow,
-            blurRadius: 20,
-            offset: Offset(0, -8),
+            color: AppColors.cardShadow.withAlpha(25),
+            blurRadius: 24,
+            offset: const Offset(0, -10),
           ),
         ],
       ),
@@ -46,31 +43,42 @@ class AppBottomNavBar extends StatelessWidget {
             final item = items[index];
             final bool isSelected = index == currentIndex;
 
-            return InkWell(
+            return GestureDetector(
               onTap: () => onItemSelected(index),
-              borderRadius: BorderRadius.circular(24),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              behavior: HitTestBehavior.opaque,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? AppColors.primary.withAlpha(20)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(16),
+                ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
                       item.icon,
-                      size: 22,
+                      size: 24,
                       color: isSelected
                           ? AppColors.primary
-                          : AppColors.textSecondary,
+                          : AppColors.textSecondary.withAlpha(180),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       item.label,
                       style: TextStyle(
                         fontSize: 11,
-                        fontWeight:
-                            isSelected ? FontWeight.w600 : FontWeight.w400,
+                        fontWeight: isSelected
+                            ? FontWeight.w600
+                            : FontWeight.w500,
                         color: isSelected
                             ? AppColors.primary
-                            : AppColors.textSecondary,
+                            : AppColors.textSecondary.withAlpha(180),
                       ),
                     ),
                   ],
