@@ -25,26 +25,30 @@ class WalletOverviewPage extends StatelessWidget {
       bottomNavigationBar: AppBottomNavBar(
         items: const [
           AppBottomNavItem(icon: Icons.home_rounded, label: 'Home'),
-          AppBottomNavItem(icon: Icons.chat_bubble_rounded, label: 'Duitin'),
+          AppBottomNavItem(
+            icon: Icons.account_balance_wallet_rounded,
+            label: 'Duitin',
+          ),
+          // Placeholder for center floating button
+          AppBottomNavItem(icon: Icons.qr_code_scanner, label: ''),
           AppBottomNavItem(icon: Icons.pie_chart_rounded, label: 'Statistic'),
           AppBottomNavItem(icon: Icons.person_rounded, label: 'Profile'),
         ],
         currentIndex: 0,
         onItemSelected: (index) {
-          // later: navigate between screens
-          if (index == 1) {
-            // Go to Duitin (Screen 2)
-            // Navigator.of(context).push(
-            //   MaterialPageRoute(
-            //     builder: (_) =>const TransactionDetailPage(),
-            //   ),
-            // );
-          } else if (index == 2) {
+          // Adjust index for items after center button
+          final adjustedIndex = index > 2 ? index - 1 : index;
+          if (adjustedIndex == 1) {
+            // Go to Duitin
+          } else if (adjustedIndex == 2) {
             // Go to Statistic / Payment (Screen 3)
             Navigator.of(
               context,
             ).push(MaterialPageRoute(builder: (_) => const PaymentPage()));
           }
+        },
+        onCenterButtonPressed: () {
+          // Handle scan/QR action
         },
       ),
       body: Container(
