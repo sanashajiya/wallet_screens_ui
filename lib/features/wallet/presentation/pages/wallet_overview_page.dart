@@ -1,4 +1,3 @@
-// lib/features/wallet/presentation/pages/wallet_overview_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallet_screens_ui/core/widgets/app_bottom_nav_bar.dart';

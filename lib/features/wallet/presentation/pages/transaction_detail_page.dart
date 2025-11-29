@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wallet_screens_ui/core/widgets/app_bottom_nav_bar.dart';
-import 'package:wallet_screens_ui/features/wallet/presentation/pages/payment_page.dart';
-
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../blocs/transaction_detail/transaction_detail_bloc.dart';
@@ -16,25 +13,6 @@ class TransactionDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // bottomNavigationBar: AppBottomNavBar(
-      //   items: const [
-      //     AppBottomNavItem(icon: Icons.home_rounded, label: 'Home'),
-      //     AppBottomNavItem(icon: Icons.chat_bubble_rounded, label: 'Duitin'),
-      //     AppBottomNavItem(icon: Icons.pie_chart_rounded, label: 'Statistic'),
-      //     AppBottomNavItem(icon: Icons.person_rounded, label: 'Profile'),
-      //   ],
-      //   currentIndex: 1, // 👉 second item highlighted
-      //   onItemSelected: (index) {
-      //     // optional: handle tab navigation later
-      //     if (index == 0) {
-      //       Navigator.of(context).popUntil((route) => route.isFirst);
-      //     } else if (index == 2) {
-      //       Navigator.of(
-      //         context,
-      //       ).push(MaterialPageRoute(builder: (_) => const PaymentPage()));
-      //     }
-      //   },
-      // ),
 
       body: Container(
         decoration: BoxDecoration(gradient: AppColors.appBackgroundGradient),
@@ -94,7 +72,6 @@ class TransactionDetailPage extends StatelessWidget {
                       ),
                     ),
                     const _ChatInputBar(),
-                    // const SizedBox(height: 2),
                   ],
                 );
               }
@@ -107,7 +84,7 @@ class TransactionDetailPage extends StatelessWidget {
   }
 }
 
-// ==== SMALL WIDGETS BELOW ====
+// ==== WIDGETS BELOW ====
 
 class _TopBar extends StatelessWidget {
   @override

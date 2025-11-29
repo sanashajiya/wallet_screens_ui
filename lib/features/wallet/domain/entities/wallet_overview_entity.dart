@@ -1,4 +1,3 @@
-// lib/features/wallet/domain/entities/wallet_overview_entity.dart
 import 'transaction_entity.dart';
 
 class WalletOverviewEntity {

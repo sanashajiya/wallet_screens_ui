@@ -33,7 +33,6 @@ class App extends StatelessWidget {
             getPaymentScreen: getPaymentScreen,
           )..add(const PaymentStarted()),
         ),
-        // TransactionDetailBloc is provided per page where you navigate to detail
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

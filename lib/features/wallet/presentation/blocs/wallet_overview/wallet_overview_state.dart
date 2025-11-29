@@ -1,4 +1,3 @@
-// lib/features/wallet/presentation/blocs/wallet_overview/wallet_overview_state.dart
 import 'package:equatable/equatable.dart';
 import '../../../domain/entities/wallet_overview_entity.dart';
 

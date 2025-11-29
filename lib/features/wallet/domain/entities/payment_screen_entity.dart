@@ -1,4 +1,3 @@
-// lib/features/wallet/domain/entities/payment_screen_entity.dart
 import 'transaction_entity.dart';
 
 class PaymentScreenEntity {

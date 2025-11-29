@@ -1,4 +1,3 @@
-// lib/features/wallet/presentation/blocs/wallet_overview/wallet_overview_event.dart
 import 'package:equatable/equatable.dart';
 
 abstract class WalletOverviewEvent extends Equatable {

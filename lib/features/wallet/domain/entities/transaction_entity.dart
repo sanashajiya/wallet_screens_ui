@@ -1,4 +1,3 @@
-// lib/features/wallet/domain/entities/transaction_entity.dart
 class TransactionEntity {
   final String id;
   final String title;      // e.g. "Starbucks"

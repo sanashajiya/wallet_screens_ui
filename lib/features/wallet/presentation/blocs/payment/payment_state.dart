@@ -1,4 +1,3 @@
-// lib/features/wallet/presentation/blocs/payment/payment_state.dart
 import 'package:equatable/equatable.dart';
 import '../../../domain/entities/payment_screen_entity.dart';
 
